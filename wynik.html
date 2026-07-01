@@ -15,9 +15,12 @@ body{font-family:'Oswald',sans-serif;background:#0b0b0b;display:flex;flex-direct
 .ctrl{display:flex;flex-direction:column;gap:7px}
 .ctrl.full{grid-column:1/-1}
 .ctrl label{font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#FFD21E}
-.ctrl select,.ctrl input{padding:11px 13px;font-family:'Oswald',sans-serif;font-size:15px;font-weight:500;color:#fff;background:rgba(255,255,255,.06);border:1.5px solid rgba(255,210,30,.4);border-radius:9px;outline:none}
+.ctrl select,.ctrl input[type=text],.ctrl input[type=number]{padding:11px 13px;font-family:'Oswald',sans-serif;font-size:15px;font-weight:500;color:#fff;background:rgba(255,255,255,.06);border:1.5px solid rgba(255,210,30,.4);border-radius:9px;outline:none}
 .ctrl select:focus,.ctrl input:focus{border-color:#FFD21E;background:rgba(255,210,30,.1)}
 .ctrl select option{background:#161610;color:#fff}
+.ctrl input[type=file]{font-size:13px;color:#ccc}
+.custom{grid-column:1/-1;display:none;gap:14px;grid-template-columns:1fr 1fr;padding:12px 14px;background:rgba(255,210,30,.06);border:1px dashed rgba(255,210,30,.4);border-radius:11px}
+.custom.on{display:grid}
 .scorers-panel{grid-column:1/-1;border-top:1px solid rgba(255,210,30,.2);padding-top:14px;display:flex;flex-direction:column;gap:10px}
 .btn-add{align-self:flex-start;display:inline-flex;align-items:center;gap:8px;background:rgba(255,210,30,.14);color:#FFD21E;border:1.5px solid rgba(255,210,30,.5);border-radius:9px;padding:10px 18px;font-family:'Oswald',sans-serif;font-weight:600;font-size:14px;letter-spacing:1px;text-transform:uppercase;cursor:pointer}
 .btn-add:hover{background:rgba(255,210,30,.24)}
@@ -36,11 +39,11 @@ body{font-family:'Oswald',sans-serif;background:#0b0b0b;display:flex;flex-direct
 .frame:before,.frame:after{content:'';position:absolute;width:44px;height:44px;border:5px solid #FFD21E}
 .frame:before{top:-3px;left:-3px;border-right:0;border-bottom:0}
 .frame:after{bottom:-3px;right:-3px;border-left:0;border-top:0}
-.top{position:absolute;top:52px;left:66px;right:66px;z-index:5;display:flex;justify-content:space-between;align-items:flex-start}
+.top{position:absolute;top:52px;left:66px;right:66px;z-index:5;display:flex;justify-content:space-between;align-items:flex-start;gap:20px}
 .tl .k{font-weight:900;font-style:italic;font-size:60px;letter-spacing:1px;text-transform:uppercase;line-height:.88}
 .tl .k b{color:#FFD21E}
 .tl .sub{font-family:'Space Mono',monospace;font-weight:700;font-size:22px;letter-spacing:3px;text-transform:uppercase;color:#fff;margin-top:12px}
-.tr{display:flex;flex-direction:column;align-items:flex-end;gap:12px}
+.tr{display:flex;flex-direction:column;align-items:flex-end;gap:12px;text-align:right}
 .chip{font-family:'Oswald',sans-serif;font-weight:700;font-size:26px;letter-spacing:4px;text-transform:uppercase;color:#111;background:#FFD21E;padding:9px 18px;border-radius:7px}
 .hash{font-family:'Space Mono',monospace;font-weight:700;font-size:24px;color:#FFD21E}
 .center{position:absolute;left:66px;right:66px;top:47%;transform:translateY(-50%);z-index:5;text-align:center}
@@ -49,7 +52,6 @@ body{font-family:'Oswald',sans-serif;background:#0b0b0b;display:flex;flex-direct
 .cname.away{color:#FFD21E;margin-top:30px;text-shadow:0 4px 4px rgba(0,0,0,.9),0 8px 40px rgba(0,0,0,.9),0 0 48px rgba(255,210,30,.45)}
 .crow{display:flex;align-items:center;justify-content:center;gap:30px}
 .badge{width:152px;height:152px;border-radius:50%;background:#F6F1E2;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 6px #FFD21E,0 0 0 12px #000,0 0 30px rgba(255,210,30,.3),0 18px 40px rgba(0,0,0,.8);overflow:hidden}
-.badge img{width:82%;height:82%;object-fit:contain}
 .badge .ini{font-family:'Saira Condensed',sans-serif;font-weight:900;font-style:italic;font-size:56px;color:#12833C;letter-spacing:-1px}
 .score{display:flex;align-items:center;gap:22px}
 .snum{font-weight:900;font-style:italic;font-size:132px;line-height:1;color:#fff;text-shadow:0 6px 26px rgba(0,0,0,.7);min-width:78px;text-align:center}
@@ -79,18 +81,34 @@ body{font-family:'Oswald',sans-serif;background:#0b0b0b;display:flex;flex-direct
   <div class="controls">
     <div class="ctrl"><label>🏠 Gospodarz</label><select id="homeSel"></select></div>
     <div class="ctrl"><label>✈️ Gość</label><select id="awaySel"></select></div>
-    <div class="ctrl"><label>Kolejka</label><select id="roundSel"></select></div>
-    <div class="ctrl"><label>Wynik gospodarza</label><input id="homeScore" type="number" min="0" max="99" value="3"></div>
-    <div class="ctrl"><label>Wynik gościa</label><input id="awayScore" type="number" min="0" max="99" value="1"></div>
-    <div class="ctrl"><label>Godzina</label><select id="timeSel"></select></div>
+    <div class="ctrl"><label>Rozgrywki (nagłówek)</label><input type="text" id="compInp" value="A Klasa · gr. 3"></div>
+
+    <div class="custom" id="homeCustom">
+      <div class="ctrl"><label>Nazwa gospodarza (spoza listy)</label><input type="text" id="homeCustomName" placeholder="np. Zryw Kargowa"></div>
+      <div class="ctrl"><label>Logo gospodarza (plik)</label><input type="file" id="homeCustomLogo" accept="image/*"></div>
+    </div>
+    <div class="custom" id="awayCustom">
+      <div class="ctrl"><label>Nazwa gościa (spoza listy)</label><input type="text" id="awayCustomName" placeholder="np. Zryw Kargowa"></div>
+      <div class="ctrl"><label>Logo gościa (plik)</label><input type="file" id="awayCustomLogo" accept="image/*"></div>
+    </div>
+
+    <div class="ctrl"><label>Wynik gospodarza</label><input type="number" id="homeScore" min="0" max="99" value="3"></div>
+    <div class="ctrl"><label>Wynik gościa</label><input type="number" id="awayScore" min="0" max="99" value="1"></div>
+    <div class="ctrl"><label>Podtytuł (kolejka / etap)</label><input type="text" id="subInp" value="12. kolejka · sezon 2026/27"></div>
+
+    <div class="ctrl"><label>Kolejka (uzupełnia podtytuł)</label><select id="roundSel"></select></div>
+    <div class="ctrl"><label>Data (dzień.miesiąc)</label><input type="text" id="dateInp" value="15.08"></div>
+    <div class="ctrl"><label>Stadion</label><input type="text" id="venueInp" value="Boisko w Drągowinie"></div>
+
     <div class="ctrl"><label>Dzień</label><select id="daySel"></select></div>
-    <div class="ctrl"><label>Data (dzień.miesiąc)</label><input id="dateInp" value="15.08"></div>
-    <div class="ctrl"><label>Stadion</label><input id="venueInp" value="Boisko w Drągowinie"></div>
+    <div class="ctrl"><label>Godzina</label><select id="timeSel"></select></div>
+    <div class="ctrl"></div>
+
     <div class="scorers-panel">
       <button class="btn-add" onclick="addScorer()"><span>⚽</span> + Dodaj strzelca</button>
       <div id="editList"></div>
     </div>
-    <div class="dl"><div class="hint">Wpisz wynik, dodaj strzelców, wybierz drużyny i szczegóły. 1200×1200 px, gotowe na Facebooka.</div>
+    <div class="dl"><div class="hint">Rozgrywki (chip) i podtytuł edytowalne — np. „Mecz towarzyski", „Puchar". Drużynę spoza listy dodasz przez „➕ Spoza listy" + logo.</div>
       <button class="download-btn" id="dlBtn" onclick="downloadImage()">⬇ Pobierz PNG</button></div>
   </div>
 
@@ -98,7 +116,7 @@ body{font-family:'Oswald',sans-serif;background:#0b0b0b;display:flex;flex-direct
     <div class="frame"></div>
     <div class="top">
       <div class="tl"><div class="k">Wynik <b>końcowy</b></div><div class="sub" id="subEl">12. kolejka · sezon 2026/27</div></div>
-      <div class="tr"><div class="chip">A Klasa · gr. 3</div><div class="hash">#CzarniDrągowina</div></div>
+      <div class="tr"><div class="chip" id="compEl">A Klasa · gr. 3</div><div class="hash">#CzarniDrągowina</div></div>
     </div>
     <div class="center">
       <div class="cname home" id="homeName">Czarni Drągowina</div>
@@ -132,19 +150,45 @@ const TEAMS={
   sokol_golaszyn:{name:'Sokół Gołaszyn', logo:null},
   przyklad_a:{name:'Orzeł Przykładowo', logo:null},
   przyklad_b:{name:'Zryw Testowo', logo:null},
-  przyklad_c:{name:'Piast Wzorcowo', logo:null},
-  wlasne:{name:'— wpisz ręcznie —', logo:null, manual:true}
+  przyklad_c:{name:'Piast Wzorcowo', logo:null}
 };
+const customLogos={home:null,away:null};
 function initials(name){return name.replace(/[^A-Za-zĄĆĘŁŃÓŚŹŻąćęłńóśźż ]/g,'').split(/\s+/).filter(Boolean).slice(0,2).map(w=>w[0]).join('').toUpperCase();}
-function fillBadge(el,team){if(team.logo){el.innerHTML='';el.style.background='url("'+team.logo+'") center / auto 70% no-repeat, #F6F1E2';}else{el.style.background='';el.innerHTML='<span class=\"ini\">'+(initials(team.name)||'?')+'</span>';}}
-function opts(sel,def){for(const id in TEAMS){const o=document.createElement('option');o.value=id;o.textContent=TEAMS[id].name;if(id===def)o.selected=true;sel.appendChild(o);}}
+function fillBadge(el,team){if(team.logo){el.innerHTML='';el.style.background='url("'+team.logo+'") center / auto 70% no-repeat, #F6F1E2';}else{el.style.background='';el.innerHTML='<span class="ini">'+(initials(team.name)||'?')+'</span>';}}
+function opts(sel,def){for(const id in TEAMS){const o=document.createElement('option');o.value=id;o.textContent=TEAMS[id].name;if(id===def)o.selected=true;sel.appendChild(o);}const c=document.createElement('option');c.value='custom';c.textContent='➕ Spoza listy (wpisz + logo)';sel.appendChild(c);}
 const homeSel=document.getElementById('homeSel'),awaySel=document.getElementById('awaySel');
 opts(homeSel,'czarni');opts(awaySel,'sokol_golaszyn');
-function applyTeam(side){const sel=side==='home'?homeSel:awaySel;const nameEl=document.getElementById(side+'Name');const badge=document.getElementById(side+'Badge');const team=TEAMS[sel.value];nameEl.setAttribute('contenteditable',team.manual?'true':'false');if(!team.manual)nameEl.textContent=team.name;else if(nameEl.textContent.includes('wpisz'))nameEl.textContent='';fillBadge(badge,team);}
+function applyTeam(side){
+  const sel=side==='home'?homeSel:awaySel;
+  const nameEl=document.getElementById(side+'Name');
+  const badge=document.getElementById(side+'Badge');
+  const block=document.getElementById(side+'Custom');
+  if(sel.value==='custom'){
+    block.classList.add('on');
+    const nm=document.getElementById(side+'CustomName').value.trim();
+    nameEl.textContent=nm||'Drużyna spoza listy';
+    fillBadge(badge,{name:nm||'?',logo:customLogos[side]});
+  }else{
+    block.classList.remove('on');
+    const team=TEAMS[sel.value];
+    nameEl.textContent=team.name;
+    fillBadge(badge,team);
+  }
+}
 homeSel.onchange=()=>applyTeam('home');awaySel.onchange=()=>applyTeam('away');
+['home','away'].forEach(side=>{
+  document.getElementById(side+'CustomName').oninput=()=>applyTeam(side);
+  document.getElementById(side+'CustomLogo').addEventListener('change',function(e){
+    const f=e.target.files[0];if(f&&f.type.startsWith('image/')){const r=new FileReader();r.onload=ev=>{customLogos[side]=ev.target.result;applyTeam(side);};r.readAsDataURL(f);}
+  });
+});
+const compInp=document.getElementById('compInp'),subInp=document.getElementById('subInp');
+compInp.oninput=()=>document.getElementById('compEl').textContent=compInp.value;
+subInp.oninput=()=>document.getElementById('subEl').textContent=subInp.value;
 const roundSel=document.getElementById('roundSel');
+const rNone=document.createElement('option');rNone.value='';rNone.textContent='— (bez kolejki)';roundSel.appendChild(rNone);
 for(let i=1;i<=30;i++){const o=document.createElement('option');o.value=i;o.textContent=i+'. kolejka';if(i===12)o.selected=true;roundSel.appendChild(o);}
-roundSel.onchange=()=>document.getElementById('subEl').textContent=roundSel.value+'. kolejka · sezon 2026/27';
+roundSel.onchange=()=>{if(roundSel.value){subInp.value=roundSel.value+'. kolejka · sezon 2026/27';subInp.oninput();}};
 const daySel=document.getElementById('daySel');
 ['Poniedziałek','Wtorek','Środa','Czwartek','Piątek','Sobota','Niedziela'].forEach(d=>{const o=document.createElement('option');o.value=d;o.textContent=d;if(d==='Sobota')o.selected=true;daySel.appendChild(o);});
 const timeSel=document.getElementById('timeSel');
@@ -155,7 +199,6 @@ function updateScore(){document.getElementById('hs').textContent=hsI.value;docum
 daySel.onchange=updateKick;timeSel.onchange=updateKick;dateInp.oninput=updateKick;
 venueInp.oninput=()=>document.getElementById('venueEl').textContent=venueInp.value;
 hsI.oninput=updateScore;asI.oninput=updateScore;
-/* strzelcy */
 let scorers=[];
 function addScorer(){if(scorers.length>=15)return;scorers.push({name:'',goals:1});renderEditor();renderScorers();}
 function removeScorer(i){scorers.splice(i,1);renderEditor();renderScorers();}

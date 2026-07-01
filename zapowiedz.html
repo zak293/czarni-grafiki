@@ -127,7 +127,8 @@ const TEAMS={
 };
 const customLogos={home:null,away:null};
 function initials(name){return name.replace(/[^A-Za-zĄĆĘŁŃÓŚŹŻąćęłńóśźż ]/g,'').split(/\s+/).filter(Boolean).slice(0,2).map(w=>w[0]).join('').toUpperCase();}
-function fillBadge(el,team){if(team.logo){el.innerHTML='';el.style.background='url("'+team.logo+'") center / auto 70% no-repeat, #F6F1E2';}else{el.style.background='';el.innerHTML='<span class="ini">'+(initials(team.name)||'?')+'</span>';}}
+function removeBgAndTrim(src,cb){var img=new Image();img.onload=function(){var w=img.width,h=img.height;var mx=512,sc=Math.min(1,mx/Math.max(w,h));w=Math.max(1,Math.round(w*sc));h=Math.max(1,Math.round(h*sc));var cv=document.createElement('canvas');cv.width=w;cv.height=h;var ct=cv.getContext('2d');ct.drawImage(img,0,0,w,h);var id;try{id=ct.getImageData(0,0,w,h);}catch(e){cb(src);return;}var d=id.data;var cs=[0,(w-1)*4,(h-1)*w*4,((h-1)*w+(w-1))*4];var br=0,bgc=0,bb=0;cs.forEach(function(i){br+=d[i];bgc+=d[i+1];bb+=d[i+2];});br/=4;bgc/=4;bb/=4;var ca=(d[cs[0]+3]+d[cs[1]+3]+d[cs[2]+3]+d[cs[3]+3])/4,doRem=ca>25;var tol=54;function near(i){var a=d[i]-br,b=d[i+1]-bgc,c=d[i+2]-bb;return a*a+b*b+c*c<tol*tol;}var vis=new Uint8Array(w*h),st=[];function ps(x,y){if(x<0||y<0||x>=w||y>=h)return;var p=y*w+x;if(vis[p])return;vis[p]=1;st.push(p);}for(var x=0;x<w;x++){ps(x,0);ps(x,h-1);}for(var y=0;y<h;y++){ps(0,y);ps(w-1,y);}while(doRem&&st.length){var p=st.pop(),i=p*4;if(!near(i))continue;d[i+3]=0;var xx=p%w,yy=(p-xx)/w;ps(xx+1,yy);ps(xx-1,yy);ps(xx,yy+1);ps(xx,yy-1);}ct.putImageData(id,0,0);var mnx=w,mny=h,mxx=0,mxy=0,fnd=false;for(var y2=0;y2<h;y2++)for(var x2=0;x2<w;x2++){if(d[(y2*w+x2)*4+3]>12){fnd=true;if(x2<mnx)mnx=x2;if(x2>mxx)mxx=x2;if(y2<mny)mny=y2;if(y2>mxy)mxy=y2;}}if(!fnd){cb(src);return;}var cw=mxx-mnx+1,ch=mxy-mny+1;var S=Math.round(Math.max(cw,ch)/0.7);var ou=document.createElement('canvas');ou.width=S;ou.height=S;ou.getContext('2d').drawImage(cv,mnx,mny,cw,ch,(S-cw)/2,(S-ch)/2,cw,ch);cb(ou.toDataURL('image/png'));};img.onerror=function(){cb(src);};img.src=src;}
+function fillBadge(el,team){if(team.logo){el.innerHTML='';var sz=team.fit==='contain'?'contain':'auto 70%';el.style.background='url("'+team.logo+'") center / '+sz+' no-repeat, #F6F1E2';}else{el.style.background='';el.innerHTML='<span class="ini">'+(initials(team.name)||'?')+'</span>';}}
 function opts(sel,def){for(const id in TEAMS){const o=document.createElement('option');o.value=id;o.textContent=TEAMS[id].name;if(id===def)o.selected=true;sel.appendChild(o);}const c=document.createElement('option');c.value='custom';c.textContent='➕ Spoza listy (wpisz + logo)';sel.appendChild(c);}
 const homeSel=document.getElementById('homeSel'),awaySel=document.getElementById('awaySel');
 opts(homeSel,'czarni');opts(awaySel,'sokol_golaszyn');
@@ -140,7 +141,7 @@ function applyTeam(side){
     block.classList.add('on');
     const nm=document.getElementById(side+'CustomName').value.trim();
     nameEl.textContent=nm||'Drużyna spoza listy';
-    fillBadge(badge,{name:nm||'?',logo:customLogos[side]});
+    fillBadge(badge,{name:nm||'?',logo:customLogos[side],fit:'contain'});
   }else{
     block.classList.remove('on');
     const team=TEAMS[sel.value];
@@ -152,7 +153,7 @@ homeSel.onchange=()=>applyTeam('home');awaySel.onchange=()=>applyTeam('away');
 ['home','away'].forEach(side=>{
   document.getElementById(side+'CustomName').oninput=()=>applyTeam(side);
   document.getElementById(side+'CustomLogo').addEventListener('change',function(e){
-    const f=e.target.files[0];if(f&&f.type.startsWith('image/')){const r=new FileReader();r.onload=ev=>{customLogos[side]=ev.target.result;applyTeam(side);};r.readAsDataURL(f);}
+    const f=e.target.files[0];if(f&&f.type.startsWith('image/')){const r=new FileReader();r.onload=ev=>{removeBgAndTrim(ev.target.result,function(out){customLogos[side]=out;applyTeam(side);});};r.readAsDataURL(f);}
   });
 });
 /* rozgrywki + podtytuł */

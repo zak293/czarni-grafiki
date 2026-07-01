@@ -81,7 +81,7 @@ body{font-family:'Oswald',sans-serif;background:#0b0b0b;display:flex;flex-direct
   <div class="controls">
     <div class="ctrl"><label>🏠 Gospodarz</label><select id="homeSel"></select></div>
     <div class="ctrl"><label>✈️ Gość</label><select id="awaySel"></select></div>
-    <div class="ctrl"><label>Rozgrywki (nagłówek)</label><input type="text" id="compInp" value="A Klasa · gr. 3"></div>
+    <div class="ctrl"><label>Rozgrywki</label><select id="compSel"><option value="liga">Liga (A Klasa · gr. 3)</option><option value="tow">Mecz towarzyski</option><option value="puchar">Puchar</option></select></div>
 
     <div class="custom" id="homeCustom">
       <div class="ctrl"><label>Nazwa gospodarza (spoza listy)</label><input type="text" id="homeCustomName" placeholder="np. Zryw Kargowa"></div>
@@ -183,13 +183,15 @@ homeSel.onchange=()=>applyTeam('home');awaySel.onchange=()=>applyTeam('away');
     const f=e.target.files[0];if(f&&f.type.startsWith('image/')){const r=new FileReader();r.onload=ev=>{removeBgAndTrim(ev.target.result,function(out){customLogos[side]=out;applyTeam(side);});};r.readAsDataURL(f);}
   });
 });
-const compInp=document.getElementById('compInp'),subInp=document.getElementById('subInp');
-compInp.oninput=()=>document.getElementById('compEl').textContent=compInp.value;
+const compSel=document.getElementById('compSel'),subInp=document.getElementById('subInp');
+const compMap={liga:'A Klasa · gr. 3',tow:'Mecz towarzyski',puchar:'Puchar'};
 subInp.oninput=()=>document.getElementById('subEl').textContent=subInp.value;
 const roundSel=document.getElementById('roundSel');
 const rNone=document.createElement('option');rNone.value='';rNone.textContent='— (bez kolejki)';roundSel.appendChild(rNone);
 for(let i=1;i<=30;i++){const o=document.createElement('option');o.value=i;o.textContent=i+'. kolejka';if(i===12)o.selected=true;roundSel.appendChild(o);}
-roundSel.onchange=()=>{if(roundSel.value){subInp.value=roundSel.value+'. kolejka · sezon 2026/27';subInp.oninput();}};
+function subFromRound(){return roundSel.value?roundSel.value+'. kolejka · sezon 2026/27':'sezon 2026/27';}
+roundSel.onchange=()=>{subInp.value=subFromRound();subInp.oninput();};
+compSel.onchange=()=>{document.getElementById('compEl').textContent=compMap[compSel.value];subInp.value=(compSel.value==='liga')?subFromRound():'sezon 2026/27';subInp.oninput();};
 const daySel=document.getElementById('daySel');
 ['Poniedziałek','Wtorek','Środa','Czwartek','Piątek','Sobota','Niedziela'].forEach(d=>{const o=document.createElement('option');o.value=d;o.textContent=d;if(d==='Sobota')o.selected=true;daySel.appendChild(o);});
 const timeSel=document.getElementById('timeSel');

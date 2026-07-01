@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Generator grafik — LZS Czarni Drągowina</title>
+<link rel="icon" href="crest.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:ital,wght@0,700;0,800;0,900;1,800;1,900&family=Oswald:wght@500;600;700&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Oswald',sans-serif;min-height:100vh;color:#fff;
+ background:radial-gradient(120% 90% at 50% -10%,#26210a 0%,#141206 45%,#0a0a08 100%);
+ display:flex;flex-direction:column;align-items:center;padding:40px 20px 60px}
+.frame-deco{position:fixed;inset:18px;border:2px solid rgba(255,210,30,.28);pointer-events:none;z-index:0}
+.wrap{width:100%;max-width:960px;position:relative;z-index:1}
+.head{text-align:center;margin-bottom:44px}
+.crest{width:120px;height:120px;border-radius:50%;background:url('crest.png') center/auto 72% no-repeat,#F6F1E2;
+ margin:0 auto 22px;box-shadow:0 0 0 6px #FFD21E,0 0 0 12px #000,0 0 46px rgba(255,210,30,.4)}
+.title{font-family:'Saira Condensed',sans-serif;font-weight:900;font-style:italic;font-size:clamp(38px,8vw,68px);text-transform:uppercase;line-height:.9;letter-spacing:-1px}
+.title b{color:#FFD21E}
+.sub{font-family:'Space Mono',monospace;font-weight:700;font-size:15px;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,.7);margin-top:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px}
+.card{display:flex;flex-direction:column;text-decoration:none;color:#fff;
+ background:linear-gradient(160deg,rgba(255,210,30,.09),rgba(255,255,255,.03));
+ border:1.5px solid rgba(255,210,30,.35);border-radius:18px;padding:30px 26px;transition:.25s;position:relative;overflow:hidden}
+.card:hover{transform:translateY(-4px);border-color:#FFD21E;box-shadow:0 16px 40px rgba(0,0,0,.5),0 0 30px rgba(255,210,30,.15)}
+.card .ico{font-size:46px;margin-bottom:14px}
+.card h2{font-family:'Saira Condensed',sans-serif;font-weight:900;font-style:italic;font-size:34px;text-transform:uppercase;letter-spacing:-.5px}
+.card p{color:rgba(255,255,255,.65);font-size:15px;font-weight:500;line-height:1.5;margin-top:8px;flex:1}
+.card .go{margin-top:20px;align-self:flex-start;background:linear-gradient(180deg,#FFE06B,#FFD21E 55%,#E9B800);color:#111;
+ font-family:'Oswald',sans-serif;font-weight:700;font-size:14px;letter-spacing:2px;text-transform:uppercase;padding:11px 22px;border-radius:10px}
+.foot{text-align:center;margin-top:46px;font-family:'Space Mono',monospace;font-size:13px;letter-spacing:2px;color:rgba(255,255,255,.4)}
+.foot b{color:#FFD21E}
+</style>
+</head>
+<body>
+<div class="frame-deco"></div>
+<div class="wrap">
+  <div class="head">
+    <div class="crest"></div>
+    <div class="title">Generator <b>grafik</b></div>
+    <div class="sub">LZS Czarni Drągowina · sezon 2026/27</div>
+  </div>
+  <div class="grid">
+    <a class="card" href="zapowiedz.html">
+      <div class="ico">📣</div>
+      <h2>Zapowiedź meczu</h2>
+      <p>Drużyny z listy, kolejka, dzień i godzina. Idealne przed meczem.</p>
+      <span class="go">Otwórz →</span>
+    </a>
+    <a class="card" href="wynik.html">
+      <div class="ico">🏆</div>
+      <h2>Wynik meczu</h2>
+      <p>Duży wynik i lista strzelców. Po ostatnim gwizdku.</p>
+      <span class="go">Otwórz →</span>
+    </a>
+    <a class="card" href="transfer.html">
+      <div class="ico">✍️</div>
+      <h2>Transfer</h2>
+      <p>Nowy zawodnik — grafika zmienia się zależnie od pozycji.</p>
+      <span class="go">Otwórz →</span>
+    </a>
+  </div>
+  <div class="foot">Wybierz narzędzie, uzupełnij dane, kliknij <b>Pobierz PNG</b> · 1200×1200</div>
+</div>
+</body>
+</html>

@@ -24,7 +24,8 @@ body{font-family:'Oswald',sans-serif;background:#0b0b0b;display:flex;flex-direct
 .download-btn:hover{transform:translateY(-2px)}
 .download-btn:disabled{opacity:.6;transform:none;cursor:default}
 
-.canvas{width:1200px;height:1200px;position:relative;overflow:hidden;color:#fff;font-family:'Saira Condensed',sans-serif;background:#000;background-size:cover;background-position:center;background-repeat:no-repeat;border-radius:4px}
+.preview{width:1200px;max-width:100%;aspect-ratio:1/1;position:relative;margin:0 auto;overflow:hidden;border-radius:4px}
+.canvas{width:1200px;height:1200px;position:absolute;top:0;left:0;transform-origin:top left;overflow:hidden;color:#fff;font-family:'Saira Condensed',sans-serif;background:#000;background-size:cover;background-position:center;background-repeat:no-repeat;border-radius:4px}
 .frame{position:absolute;inset:26px;border:2px solid rgba(255,210,30,.5);z-index:4;pointer-events:none}
 .frame:before,.frame:after{content:'';position:absolute;width:44px;height:44px;border:5px solid #FFD21E}
 .frame:before{top:-3px;left:-3px;border-right:0;border-bottom:0}
@@ -45,6 +46,8 @@ body{font-family:'Oswald',sans-serif;background:#0b0b0b;display:flex;flex-direct
 .fromclub{font-family:'Oswald',sans-serif;font-weight:600;font-size:30px;color:#fff;letter-spacing:1px;text-shadow:0 2px 10px rgba(0,0,0,.8)}
 .fromclub b{color:#FFD21E;font-weight:700}
 .botline{position:absolute;left:66px;right:66px;bottom:66px;height:4px;background:repeating-linear-gradient(90deg,#FFD21E 0 20px,transparent 20px 30px);opacity:.8;z-index:5}
+@media(max-width:820px){body{padding:12px}.controls{grid-template-columns:1fr !important;padding:16px}.custom{grid-template-columns:1fr !important}.dl{flex-direction:column;align-items:stretch}.hint{order:2}.download-btn{width:100%;text-align:center}}
+.ctrl{min-width:0}.controls select,.controls input{width:100%;min-width:0;max-width:100%}
 </style>
 </head>
 <body>
@@ -59,7 +62,7 @@ body{font-family:'Oswald',sans-serif;background:#0b0b0b;display:flex;flex-direct
       <button class="download-btn" id="dlBtn" onclick="downloadImage()">⬇ Pobierz PNG</button></div>
   </div>
 
-  <div class="canvas" id="canvas">
+  <div class="preview" id="preview"><div class="canvas" id="canvas">
     <div class="frame"></div>
     <div class="top">
       <div class="tl"><div class="k">Transfer <b>2026/27</b></div><div class="sub">LZS Czarni Drągowina</div></div>
@@ -74,7 +77,7 @@ body{font-family:'Oswald',sans-serif;background:#0b0b0b;display:flex;flex-direct
       </div>
     </div>
     <div class="botline"></div>
-  </div>
+  </div></div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -95,7 +98,9 @@ nameInp.oninput=()=>document.getElementById('nameEl').textContent=nameInp.value;
 clubInp.oninput=()=>document.getElementById('clubEl').textContent=clubInp.value;
 headSel.onchange=()=>document.getElementById('welcomeEl').textContent=headSel.value;
 updatePos();
-async function downloadImage(){const btn=document.getElementById('dlBtn');btn.textContent='Generowanie…';btn.disabled=true;try{const out=await html2canvas(canvas,{backgroundColor:'#000',scale:2,useCORS:true,allowTaint:true,logging:false});const a=document.createElement('a');a.download='transfer-czarni-dragowina.png';a.href=out.toDataURL('image/png');a.click();btn.textContent='✓ Pobrano!';}catch(e){console.error(e);btn.textContent='✗ Błąd';}setTimeout(()=>{btn.textContent='⬇ Pobierz PNG';btn.disabled=false;},1600);}
+function fitPreview(){var p=document.getElementById('preview');if(!p)return;var s=Math.min(1,p.clientWidth/1200);document.getElementById('canvas').style.transform='scale('+s+')';}
+window.addEventListener('resize',fitPreview);fitPreview();
+async function downloadImage(){const btn=document.getElementById('dlBtn');btn.textContent='Generowanie…';btn.disabled=true;canvas.style.transform='none';try{const out=await html2canvas(canvas,{backgroundColor:'#000',scale:2,useCORS:true,allowTaint:true,logging:false});const a=document.createElement('a');a.download='transfer-czarni-dragowina.png';a.href=out.toDataURL('image/png');a.click();btn.textContent='✓ Pobrano!';}catch(e){console.error(e);btn.textContent='✗ Błąd';}fitPreview();setTimeout(()=>{btn.textContent='⬇ Pobierz PNG';btn.disabled=false;},1600);}
 </script>
 </body>
 </html>

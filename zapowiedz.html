@@ -69,7 +69,7 @@ body{font-family:'Oswald',sans-serif;background:#0b0b0b;display:flex;flex-direct
   <div class="controls">
     <div class="ctrl"><label>🏠 Gospodarz</label><select id="homeSel"></select></div>
     <div class="ctrl"><label>✈️ Gość</label><select id="awaySel"></select></div>
-    <div class="ctrl"><label>Rozgrywki</label><select id="compSel"><option value="liga">Liga (A Klasa · gr. 3)</option><option value="tow">Mecz towarzyski</option><option value="puchar">Puchar</option></select></div>
+    <div class="ctrl"><label>Rozgrywki</label><select id="compSel"><option value="liga">Liga (Klasa Okręgowa)</option><option value="tow">Mecz towarzyski</option><option value="puchar">Puchar</option></select></div>
 
     <div class="custom" id="homeCustom">
       <div class="ctrl"><label>Nazwa gospodarza (spoza listy)</label><input type="text" id="homeCustomName" placeholder="np. Zryw Kargowa"></div>
@@ -96,7 +96,7 @@ body{font-family:'Oswald',sans-serif;background:#0b0b0b;display:flex;flex-direct
     <div class="frame"></div>
     <div class="top">
       <div class="tl"><div class="k">Dzień <b>meczowy</b></div><div class="sub" id="subEl">12. kolejka · sezon 2026/27</div></div>
-      <div class="tr"><div class="chip" id="compEl">A Klasa · gr. 3</div><div class="hash">#CzarniDrągowina</div></div>
+      <div class="tr"><div class="chip" id="compEl">Klasa Okręgowa</div><div class="hash">#CzarniDrągowina</div></div>
     </div>
     <div class="center">
       <div class="cname home" id="homeName">Czarni Drągowina</div>
@@ -161,7 +161,7 @@ homeSel.onchange=()=>applyTeam('home');awaySel.onchange=()=>applyTeam('away');
 });
 /* rozgrywki + podtytuł */
 const compSel=document.getElementById('compSel'),subInp=document.getElementById('subInp');
-const compMap={liga:'A Klasa · gr. 3',tow:'Mecz towarzyski',puchar:'Puchar'};
+const compMap={liga:'Klasa Okręgowa',tow:'Mecz towarzyski',puchar:'Puchar'};
 subInp.oninput=()=>document.getElementById('subEl').textContent=subInp.value;
 const roundSel=document.getElementById('roundSel');
 const rNone=document.createElement('option');rNone.value='';rNone.textContent='— (bez kolejki)';roundSel.appendChild(rNone);

@@ -174,11 +174,12 @@ homeSel.onchange=()=>applyTeam('home');awaySel.onchange=()=>applyTeam('away');
 const compSel=document.getElementById('compSel'),subInp=document.getElementById('subInp');
 const compMap={liga:'Klasa Okręgowa',tow:'Mecz towarzyski',puchar:'Puchar'};
 subInp.oninput=()=>document.getElementById('subEl').textContent=subInp.value;
+const TERMINARZ={1:{home:'czarni',away:'relax_grabice',day:'Sobota',date:'08.08',time:'17:00',venue:'Boisko w Drągowinie'},2:{home:'blekitni_olobok',away:'czarni',day:'Sobota',date:'15.08',time:'17:00',venue:'Boisko w Ołoboku'},3:{home:'czarni',away:'cargovia_kargowa',day:'Sobota',date:'22.08',time:'17:00',venue:'Boisko w Drągowinie'},4:{home:'kp_swidnica',away:'czarni',day:'Sobota',date:'29.08',time:'17:00',venue:'Stadion w Świdnicy'},5:{home:'czarni',away:'czarni_palck',day:'Sobota',date:'05.09',time:'16:00',venue:'Boisko w Drągowinie'},6:{home:'zjednoczeni_brody',away:'czarni',day:'Sobota',date:'12.09',time:'16:00',venue:'Stadion w Brodach'},7:{home:'czarni',away:'unia_kunice',day:'Sobota',date:'19.09',time:'16:00',venue:'Boisko w Drągowinie'},8:{home:'czarni',away:'budowlani_lubsko',day:'Sobota',date:'26.09',time:'16:00',venue:'Boisko w Drągowinie'},9:{home:'bobr_bobrowice',away:'czarni',day:'Sobota',date:'03.10',time:'16:00',venue:'Stadion w Bobrowicach'},10:{home:'czarni',away:'zorza_ochla',day:'Sobota',date:'10.10',time:'15:30',venue:'Boisko w Drągowinie'},11:{home:'pogon_wezyska',away:'czarni',day:'Sobota',date:'17.10',time:'15:00',venue:'Stadion w Wężyskach'},12:{home:'czarni',away:'ts_przylep',day:'Sobota',date:'24.10',time:'15:00',venue:'Boisko w Drągowinie'},13:{home:'lks_leknica',away:'czarni',day:'Sobota',date:'31.10',time:'14:00',venue:'Stadion Miejski, Łęknica'},14:{home:'czarni',away:'dab_slawa',day:'Sobota',date:'07.11',time:'14:00',venue:'Boisko w Drągowinie'},15:{home:'tecza_krosno',away:'czarni',day:'Sobota',date:'14.11',time:'13:00',venue:'OSiR Krosno Odrzańskie'}};
 const roundSel=document.getElementById('roundSel');
 const rNone=document.createElement('option');rNone.value='';rNone.textContent='— (bez kolejki)';roundSel.appendChild(rNone);
-for(let i=1;i<=30;i++){const o=document.createElement('option');o.value=i;o.textContent=i+'. kolejka';if(i===12)o.selected=true;roundSel.appendChild(o);}
+for(let i=1;i<=30;i++){const o=document.createElement('option');o.value=i;o.textContent=i+'. kolejka';if(i===1)o.selected=true;roundSel.appendChild(o);}
 function subFromRound(){return roundSel.value?roundSel.value+'. kolejka · sezon 2026/27':'sezon 2026/27';}
-roundSel.onchange=()=>{subInp.value=subFromRound();subInp.oninput();};
+roundSel.onchange=()=>{const r=roundSel.value;if(r&&TERMINARZ[r]){const f=TERMINARZ[r];homeSel.value=f.home;awaySel.value=f.away;applyTeam('home');applyTeam('away');daySel.value=f.day;dateInp.value=f.date;timeSel.value=f.time;updateKick();venueInp.value=f.venue;venueInp.oninput();}subInp.value=subFromRound();subInp.oninput();};
 compSel.onchange=()=>{document.getElementById('compEl').textContent=compMap[compSel.value];subInp.value=(compSel.value==='liga')?subFromRound():'sezon 2026/27';subInp.oninput();};
 /* dzień / godzina */
 const daySel=document.getElementById('daySel');
@@ -189,7 +190,7 @@ const dateInp=document.getElementById('dateInp'),venueInp=document.getElementByI
 function updateKick(){document.getElementById('kickDate').textContent=daySel.value+' · '+dateInp.value;document.getElementById('kickTime').textContent=timeSel.value;}
 daySel.onchange=updateKick;timeSel.onchange=updateKick;dateInp.oninput=updateKick;
 venueInp.oninput=()=>document.getElementById('venueEl').textContent=venueInp.value;
-applyTeam('home');applyTeam('away');updateKick();
+applyTeam('home');applyTeam('away');updateKick();roundSel.onchange();
 function fitPreview(){var p=document.getElementById('preview');if(!p)return;var s=Math.min(1,p.clientWidth/1200);document.getElementById('canvas').style.transform='scale('+s+')';}
 window.addEventListener('resize',fitPreview);fitPreview();
 async function downloadImage(){const canvas=document.getElementById('canvas'),btn=document.getElementById('dlBtn');btn.textContent='Generowanie…';btn.disabled=true;canvas.style.transform='none';try{const out=await html2canvas(canvas,{backgroundColor:'#000',scale:2,useCORS:true,allowTaint:true,logging:false});const a=document.createElement('a');a.download='zapowiedz-czarni-dragowina.png';a.href=out.toDataURL('image/png');a.click();btn.textContent='✓ Pobrano!';}catch(e){console.error(e);btn.textContent='✗ Błąd';}fitPreview();setTimeout(()=>{btn.textContent='⬇ Pobierz PNG';btn.disabled=false;},1600);}

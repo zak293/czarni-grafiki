@@ -101,7 +101,7 @@ body{font-family:'Oswald',sans-serif;background:#0b0b0b;display:flex;flex-direct
 
     <div class="ctrl"><label>Kolejka (uzupełnia podtytuł)</label><select id="roundSel"></select></div>
     <div class="ctrl"><label>Data (dzień.miesiąc)</label><input type="text" id="dateInp" value="15.08"></div>
-    <div class="ctrl"><label>Stadion</label><input type="text" id="venueInp" value="Boisko w Drągowinie"></div>
+    <div class="ctrl"><label>Stadion</label><input type="text" id="venueInp" value="Stadion w Drągowinie"></div>
 
     <div class="ctrl"><label>Dzień</label><select id="daySel"></select></div>
     <div class="ctrl"><label>Godzina</label><select id="timeSel"></select></div>
@@ -119,7 +119,7 @@ body{font-family:'Oswald',sans-serif;background:#0b0b0b;display:flex;flex-direct
     <div class="frame"></div>
     <div class="top">
       <div class="tl"><div class="k">Wynik <b>końcowy</b></div><div class="sub" id="subEl">12. kolejka · sezon 2026/27</div></div>
-      <div class="tr"><div class="chip" id="compEl">Klasa Okręgowa</div><div class="hash">#CzarniDrągowina</div></div>
+      <div class="tr"><div class="chip" id="compEl">Klasa Okręgowa</div><div class="hash">#CzarniDragowina</div></div>
     </div>
     <div class="center">
       <div class="cname home" id="homeName">Czarni Drągowina</div>
@@ -138,7 +138,7 @@ body{font-family:'Oswald',sans-serif;background:#0b0b0b;display:flex;flex-direct
       <div class="botline"></div>
       <div class="botrow">
         <div class="kick"><span class="d" id="kickDate">Sobota · 15.08</span><span class="t" id="kickTime">17:00</span></div>
-        <div class="mid"><div class="l">Stadion</div><div class="v" id="venueEl">Boisko w Drągowinie</div></div>
+        <div class="mid"><div class="l">Stadion</div><div class="v" id="venueEl">Stadion w Drągowinie</div></div>
         <div class="soc"><div class="a">fb.com/CzarniDrągowina</div><div class="b">★ Dziękujemy za doping!</div></div>
       </div>
     </div>
@@ -200,7 +200,7 @@ homeSel.onchange=()=>applyTeam('home');awaySel.onchange=()=>applyTeam('away');
 const compSel=document.getElementById('compSel'),subInp=document.getElementById('subInp');
 const compMap={liga:'Klasa Okręgowa',tow:'Mecz towarzyski',puchar:'Puchar'};
 subInp.oninput=()=>document.getElementById('subEl').textContent=subInp.value;
-const TERMINARZ={1:{home:'czarni',away:'relax_grabice',day:'Sobota',date:'08.08',time:'17:00',venue:'Boisko w Drągowinie'},2:{home:'blekitni_olobok',away:'czarni',day:'Sobota',date:'15.08',time:'17:00',venue:'Boisko w Ołoboku'},3:{home:'czarni',away:'cargovia_kargowa',day:'Sobota',date:'22.08',time:'17:00',venue:'Boisko w Drągowinie'},4:{home:'kp_swidnica',away:'czarni',day:'Sobota',date:'29.08',time:'17:00',venue:'Stadion w Świdnicy'},5:{home:'czarni',away:'czarni_palck',day:'Sobota',date:'05.09',time:'16:00',venue:'Boisko w Drągowinie'},6:{home:'zjednoczeni_brody',away:'czarni',day:'Sobota',date:'12.09',time:'16:00',venue:'Stadion w Brodach'},7:{home:'czarni',away:'unia_kunice',day:'Sobota',date:'19.09',time:'16:00',venue:'Boisko w Drągowinie'},8:{home:'czarni',away:'budowlani_lubsko',day:'Sobota',date:'26.09',time:'16:00',venue:'Boisko w Drągowinie'},9:{home:'bobr_bobrowice',away:'czarni',day:'Sobota',date:'03.10',time:'16:00',venue:'Stadion w Bobrowicach'},10:{home:'czarni',away:'zorza_ochla',day:'Sobota',date:'10.10',time:'15:30',venue:'Boisko w Drągowinie'},11:{home:'pogon_wezyska',away:'czarni',day:'Sobota',date:'17.10',time:'15:00',venue:'Stadion w Wężyskach'},12:{home:'czarni',away:'ts_przylep',day:'Sobota',date:'24.10',time:'15:00',venue:'Boisko w Drągowinie'},13:{home:'lks_leknica',away:'czarni',day:'Sobota',date:'31.10',time:'14:00',venue:'Stadion Miejski, Łęknica'},14:{home:'czarni',away:'dab_slawa',day:'Sobota',date:'07.11',time:'14:00',venue:'Boisko w Drągowinie'},15:{home:'tecza_krosno',away:'czarni',day:'Sobota',date:'14.11',time:'13:00',venue:'OSiR Krosno Odrzańskie'}};
+const TERMINARZ={1:{home:'czarni',away:'relax_grabice',day:'Sobota',date:'08.08',time:'17:00',venue:'Stadion w Drągowinie'},2:{home:'blekitni_olobok',away:'czarni',day:'Sobota',date:'15.08',time:'17:00',venue:'Stadion w Ołoboku'},3:{home:'czarni',away:'cargovia_kargowa',day:'Sobota',date:'22.08',time:'17:00',venue:'Stadion w Drągowinie'},4:{home:'kp_swidnica',away:'czarni',day:'Sobota',date:'29.08',time:'17:00',venue:'Stadion w Świdnicy'},5:{home:'czarni',away:'czarni_palck',day:'Sobota',date:'05.09',time:'16:00',venue:'Stadion w Drągowinie'},6:{home:'zjednoczeni_brody',away:'czarni',day:'Sobota',date:'12.09',time:'16:00',venue:'Stadion w Brodach'},7:{home:'czarni',away:'unia_kunice',day:'Sobota',date:'19.09',time:'16:00',venue:'Stadion w Drągowinie'},8:{home:'czarni',away:'budowlani_lubsko',day:'Sobota',date:'26.09',time:'16:00',venue:'Stadion w Drągowinie'},9:{home:'bobr_bobrowice',away:'czarni',day:'Sobota',date:'03.10',time:'16:00',venue:'Stadion w Bobrowicach'},10:{home:'czarni',away:'zorza_ochla',day:'Sobota',date:'10.10',time:'15:30',venue:'Stadion w Drągowinie'},11:{home:'pogon_wezyska',away:'czarni',day:'Sobota',date:'17.10',time:'15:00',venue:'Stadion w Wężyskach'},12:{home:'czarni',away:'ts_przylep',day:'Sobota',date:'24.10',time:'15:00',venue:'Stadion w Drągowinie'},13:{home:'lks_leknica',away:'czarni',day:'Sobota',date:'31.10',time:'14:00',venue:'Stadion w Łęknicy'},14:{home:'czarni',away:'dab_slawa',day:'Sobota',date:'07.11',time:'14:00',venue:'Stadion w Drągowinie'},15:{home:'tecza_krosno',away:'czarni',day:'Sobota',date:'14.11',time:'13:00',venue:'Stadion w Krośnie Odrzańskim'}};
 const roundSel=document.getElementById('roundSel');
 const rNone=document.createElement('option');rNone.value='';rNone.textContent='— (bez kolejki)';roundSel.appendChild(rNone);
 for(let i=1;i<=30;i++){const o=document.createElement('option');o.value=i;o.textContent=i+'. kolejka';if(i===1)o.selected=true;roundSel.appendChild(o);}
